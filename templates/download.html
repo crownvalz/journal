@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Statement</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table th, .table td { vertical-align: middle; }
+        .total-section { font-size: 1.2em; font-weight: bold; }
+        .income { color: green; }
+        .expense { color: red; }
+        .error-message { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Bank Stement</h2>
+
+    <!-- Error Message Display -->
+    {% if error_message %}
+        <div class="alert alert-danger error-message">
+            {{ error_message }}
+        </div>
+    {% endif %}
+    
+    <!-- Bank Statement Table -->
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Debit (DR)</th>
+                <th>Credit (CR)</th>
+                <th>Balance ($)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.date }}</td>
+                <td>{{ transaction.description }}</td>
+                <td class="{% if transaction.type == 'credit' %}income{% else %}expense{% endif %}">
+                    {{ transaction.type.capitalize() }}
+                </td>
+                <td class="expense">
+                    {% if transaction.type == 'debit' %}
+                        {{ transaction.amount }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td class="income">
+                    {% if transaction.type == 'credit' %}
+                        {{ transaction.amount }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{{ transaction.balance }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Total and Balance Section -->
+    <div class="total-section mt-3">
+        <div>Total Credits (Income): <span class="income">${{ total_credit }}</span></div>
+        <div>Total Debits (Expenses): <span class="expense">${{ total_debit }}</span></div>
+        <div>Current Balance: <span class="balance">${{ final_balance }}</span></div>
+    </div>
+
+    <!-- Transaction Form to add Debit or Credit -->
+    <h3 class="mt-5">Add a Transaction</h3>
+    <form method="POST">
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" class="form-control" id="date" name="date" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" name="description" required>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount ($)</label>
+            <input type="number" class="form-control" id="amount" name="amount" required step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="type">Transaction Type</label>
+            <select class="form-control" id="type" name="type" required>
+                <option value="credit">Credit (Income)</option>
+                <option value="debit">Debit (Expense)</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Transaction</button>
+    </form>
+
+    <!-- Export Buttons -->
+    <div class="mt-4">
+        <a href="/download/csv" class="btn btn-success">Download CSV</a>
+        <a href="/download/pdf" class="btn btn-danger">Download PDF</a>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

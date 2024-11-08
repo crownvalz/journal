@@ -1,0 +1,4 @@
+name,account_number,transaction_type,debit,credit
+HAMAD MAKAMBA SAID,20000058275,debit,1000.0,
+VENDORS PAYMENT PAYABLE,LI12345,credit,,1000.0
+CASH AT HAND,AS98765,credit,,1000.0
