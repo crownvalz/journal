@@ -7,88 +7,217 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
     <style>
-        /* Custom styling for the navbar */
+        /* Custom Styling for a Professional Theme */
+        body {
+            background-color: #f4f5f7;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Navbar with Navy Background */
         .navbar-custom {
-            background-color: #3b5998;
+            background-color: #2e3b4e;
         }
         .navbar-custom .navbar-brand, .navbar-custom .nav-link {
-            color: #fff;
+            color: #ffffff !important;
         }
         .navbar-custom .nav-link:hover {
-            color: #dfe3ee;
+            color: #00adb5 !important;
         }
 
-        /* Custom toggle button styling */
-        .navbar-toggler {
-            border: none; /* Remove border around toggle button */
-            padding: 0;
-            background: none; /* Remove default background */
+        /* Preloader Styling */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
         }
-        .navbar-toggler-icon span {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background-color: #fff;
-            margin: 4px 0;
-            transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transitions */
+        .preloader .spinner-border {
+            width: 4rem;
+            height: 4rem;
+            color: #00adb5;
         }
-        /* Transform to "X" when active */
-        .navbar-toggler.collapsed .navbar-toggler-icon span:nth-child(1) {
-            transform: rotate(45deg) translate(4px, 4px);
+
+        /* Info Card Styling */
+        .info-card {
+            border: none;
+            border-radius: 5px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
         }
-        .navbar-toggler.collapsed .navbar-toggler-icon span:nth-child(2) {
-            opacity: 0;
+        .info-card h5 {
+            font-size: 1.2rem;
+            color: #2e3b4e;
+            margin-bottom: 5px;
         }
-        .navbar-toggler.collapsed .navbar-toggler-icon span:nth-child(3) {
-            transform: rotate(-45deg) translate(4px, -4px);
+        .info-card p {
+            font-size: 1.5rem;
+            color: #00adb5;
+        }
+        /* Hover effect on Info Cards */
+        .info-card {
+            border: none;
+            border-radius: 5px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Table Styling */
+        .table thead {
+            background-color: #2e3b4e;
+            color: #ffffff;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        .table tfoot {
+            background-color: #f0f1f3;
+            font-weight: bold;
+        }
+
+        /* Buttons and Form Inputs */
+        .btn-primary {
+            background-color: #00adb5;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #007a81;
+        }
+        .btn-secondary {
+            background-color: #333840;
+            border: none;
+            color: #ffffff;
+        }
+        .btn-secondary:hover {
+            background-color: #2e3b4e;
+        }
+
+        /* Cool Toggle Button */
+        .toggle-btn {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background-color: #ccc;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-btn:before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 19px;
+            height: 19px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background-color: #00adb5;
+        }
+
+        .toggle-btn.active:before {
+            transform: translateX(25px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 576px) {
+            .navbar-nav {
+                text-align: center;
+            }
+
+            .info-card {
+                margin-bottom: 15px;
+            }
+
+            .toggle-btn {
+                width: 45px;
+                height: 22px;
+            }
         }
     </style>
 </head>
-<body>
+<body onload="hidePreloader()">
+
+<!-- Preloader -->
+<div class="preloader" id="preloader">
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
 
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container">
         <a class="navbar-brand" href="#">Journal Entry System</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <div class="navbar-toggler-icon">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Reports</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Settings</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Help</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Reports</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container mt-4 print-area">
-    <h2 class="text-center mb-4">Journal Entry</h2>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Journal Entry Dashboard</h2>
 
-    <!-- Button to Open the Add Entry Modal -->
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addModal">Add Entry</button>
-    <!-- Export Buttons -->
-    <a href="/download/pdf" class="btn btn-secondary mb-3">PDF</a>
+    <!-- Summary Info Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="info-card">
+                <h5>Total Debit</h5>
+                <p>{{ total_debit }}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-card">
+                <h5>Total Credit</h5>
+                <p>{{ total_credit }}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-card">
+                <h5>Entries Count</h5>
+                <p>{{ journal_entries|length }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Entry Button and Export -->
+    <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" data-toggle="tooltip" title="Add a new journal entry">Add Entry</button>
+        <a href="/download/pdf" class="btn btn-secondary" data-toggle="tooltip" title="Download as PDF">Export as PDF</a>
+    </div>
 
     <!-- Journal Entry Table -->
     <table id="journalTable" class="table table-bordered table-hover nowrap" style="width:100%">
-        <thead class="bg-primary text-white">
+        <thead>
             <tr>
                 <th>S/N</th>
                 <th>Name</th>
@@ -96,37 +225,40 @@
                 <th>Transaction Type</th>
                 <th>Debit (DR)</th>
                 <th>Credit (CR)</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% if journal_entries %}
-                {% for entry in journal_entries %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ entry['name'] }}</td>
-                        <td>{{ entry['account_number'] }}</td>
-                        <td>{{ entry['transaction_type'] }}</td>
-                        <td>{{ entry['debit'] or "" }}</td>
-                        <td>{{ entry['credit'] or "" }}</td>
-                    </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    <td colspan="6" class="text-center">No Journal Entries Found</td>
-                </tr>
-            {% endif %}
+            {% for entry in journal_entries %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ entry['name'] }}</td>
+                <td>{{ entry['account_number'] }}</td>
+                <td>{{ entry['transaction_type'] }}</td>
+                <td>{{ entry['debit'] or '-' }}</td>
+                <td>{{ entry['credit'] or '-' }}</td>
+                <td>
+                    <!-- Delete Button -->
+                    <form action="/delete_entry" method="POST" style="display:inline;">
+                        <input type="hidden" name="index" value="{{ loop.index0 }}">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this entry?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="4"><strong>Total</strong></td>
                 <td>{{ total_debit }}</td>
                 <td>{{ total_credit }}</td>
+                <td></td>
             </tr>
         </tfoot>
     </table>
 </div>
 
-<!-- Modal to Add a New Journal Entry -->
+<!-- Add Entry Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -137,7 +269,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST">
+                <form method="POST" onsubmit="showPreloader()">
                     <div class="form-group">
                         <label for="account_type">Select Account Type</label>
                         <select class="form-control" id="account_type" name="account_type" onchange="toggleFields()">
@@ -166,13 +298,13 @@
                     <div class="form-group">
                         <label for="nature_of_transaction">Nature of Transaction</label>
                         <select class="form-control" id="nature_of_transaction" name="nature_of_transaction">
-                            <option value="debit">Debit</option>
-                            <option value="credit">Credit</option>
+                            <option value="Debit">Debit</option>
+                            <option value="Credit">Credit</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
-                        <input type="number" class="form-control" id="amount" name="amount" step="0.01" required>
+                        <input type="number" class="form-control" id="amount" name="amount" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -181,31 +313,42 @@
     </div>
 </div>
 
-<!-- Scripts for Modal, DataTables, and Form Functionality -->
+<!-- Footer -->
+<footer class="text-center mt-4">
+    <p>&copy; 2024 Journal Entry System. All Rights Reserved.</p>
+</footer>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
 
 <script>
     $(document).ready(function() {
         $('#journalTable').DataTable({
-            responsive: true,
-            paging: true,
-            searching: true,
-            ordering: true
+            responsive: true
         });
     });
 
     function toggleFields() {
-        const accountType = document.getElementById("account_type").value;
-        document.getElementById("customer_account_group").style.display = accountType === "customer" ? "block" : "none";
-        document.getElementById("gl_account_group").style.display = accountType === "gl" ? "block" : "none";
+        const accountType = document.getElementById('account_type').value;
+        document.getElementById('customer_account_group').style.display = accountType === 'customer' ? 'block' : 'none';
+        document.getElementById('gl_account_group').style.display = accountType === 'gl' ? 'block' : 'none';
+    }
+
+    function hidePreloader() {
+        document.getElementById('preloader').style.display = 'none';
+    }
+
+    function showPreloader() {
+        document.getElementById('preloader').style.display = 'flex';
+    }
+
+    // Toggle Button Action
+    function toggleTheme() {
+        document.querySelector('.toggle-btn').classList.toggle('active');
     }
 </script>
-
 </body>
 </html>

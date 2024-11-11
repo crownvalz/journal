@@ -1,0 +1,6 @@
+Flask==2.3.3
+WeasyPrint==63.0
+pandas==2.1.0
+cffi==1.15.1
+gunicorn==20.1.0
+Werkzeug==2.3.3

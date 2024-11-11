@@ -4,7 +4,6 @@ from pdf_utils import generate_pdf
 from csv_utils import generate_csv
 import random
 from datetime import datetime
-
 app = Flask(__name__)
 
 # Paths to CSV files
@@ -25,8 +24,8 @@ def journal_entry():
         nature_of_transaction = request.form["nature_of_transaction"]
         amount = float(request.form["amount"])
 
-        debit = str(amount) if nature_of_transaction == "debit" else ""
-        credit = str(amount) if nature_of_transaction == "credit" else ""
+        debit = str(amount) if nature_of_transaction == "Debit" else ""
+        credit = str(amount) if nature_of_transaction == "Credit" else ""
 
         if account_type == "customer":
             account_number = request.form["customer_account"]
